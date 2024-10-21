@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ASP.NET_lesson_3_project.Data;
+using ASP.NET_lesson_3_project.ServiceInterfaces;
+using ASP.NET_lesson_3_project.Services;
 namespace ASP.NET_lesson_3_project
 {
 	public class Program
@@ -13,6 +15,7 @@ namespace ASP.NET_lesson_3_project
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+			builder.Services.AddSingleton<IFileService,FileService>();
 
 			var app = builder.Build();
 

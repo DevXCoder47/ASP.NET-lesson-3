@@ -4,7 +4,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    img{
+        height: 50px;
+        width: 100px;
+    }
+</style>
 <h1>Index</h1>
 
 <p>
@@ -13,6 +18,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Avatar
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -31,6 +39,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <img src="@(ViewBag.FileDirectory + '/' + item.FileName)" alt="avatar">
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>

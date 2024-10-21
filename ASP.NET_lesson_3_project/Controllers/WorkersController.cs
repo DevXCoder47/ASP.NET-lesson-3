@@ -7,21 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_lesson_3_project.Data;
 using ASP.NET_lesson_3_project.Models;
+using ASP.NET_lesson_3_project.ServiceInterfaces;
 
 namespace ASP.NET_lesson_3_project.Controllers
 {
     public class WorkersController : Controller
     {
         private readonly ManagerContext _context;
+        private IFileService service;
 
-        public WorkersController(ManagerContext context)
+        public WorkersController(ManagerContext context, IFileService service)
         {
             _context = context;
+            this.service = service;
         }
 
         // GET: Workers
         public async Task<IActionResult> Index()
         {
+            ViewBag.FileDirectory = service.GetFilesDirectory();
             return View(await _context.Worker.ToListAsync());
         }
 
@@ -39,7 +43,7 @@ namespace ASP.NET_lesson_3_project.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.FileDirectory = service.GetFilesDirectory();
             return View(worker);
         }
 
@@ -54,10 +58,15 @@ namespace ASP.NET_lesson_3_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Department,FileName")] Worker worker)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Department")] Worker worker, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    worker.FileName = file.FileName;
+                    service.UploadFile(file);
+                }
                 _context.Add(worker);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +95,7 @@ namespace ASP.NET_lesson_3_project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Department,FileName")] Worker worker)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Department")] Worker worker, IFormFile file)
         {
             if (id != worker.Id)
             {
@@ -97,6 +106,11 @@ namespace ASP.NET_lesson_3_project.Controllers
             {
                 try
                 {
+                    if (file != null)
+                    {
+                        worker.FileName = file.FileName;
+                        service.UploadFile(file);
+                    }
                     _context.Update(worker);
                     await _context.SaveChangesAsync();
                 }
@@ -130,7 +144,7 @@ namespace ASP.NET_lesson_3_project.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.FileDirectory = service.GetFilesDirectory();
             return View(worker);
         }
 

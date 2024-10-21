@@ -4,12 +4,18 @@
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    img {
+        height: 150px;
+        width: 300px;
+    }
+</style>
 <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Worker</h4>
+    <img src="@(ViewBag.Filedirectory + "/" + Model.FileName)" alt="avatar" />
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
