@@ -4,10 +4,16 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    img {
+        height: 150px;
+        width: 300px;
+    }
+</style>
 <h1>Edit</h1>
 
 <h4>Worker</h4>
+<img src="@(ViewBag.Filedirectory + "/" + Model.FileName)" alt="avatar" />
 <hr />
 <div class="row">
     <div class="col-md-4">

@@ -87,6 +87,7 @@ namespace ASP.NET_lesson_3_project.Controllers
             {
                 return NotFound();
             }
+            ViewBag.FileDirectory = service.GetFilesDirectory();
             return View(worker);
         }
 
